@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #7C3AED;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #000380;
+}
+
+.classe1 {
+    color: gold;
+    font-weight: bold;
+}
+
+.classe2 {
+    font-size: large;
+}
+
+.evento {
+    max-width: 750px;
+    margin: 40px auto;
+    padding: 24px;
+    border: 2.5px solid #000380;
+    border-radius: 20px;
+    background-color: white;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 24px auto;
+    border: 2.5px solid #000380;
+    border-radius: 20px;
+}
+
+a {
+    color: #000380;
+}
+
+a:hover {
+    color: gold;
+    text-decoration: underline;
+}

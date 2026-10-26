@@ -1,0 +1,61 @@
+/* Inclui padding e border dentro da largura declarada. */
+* {
+    box-sizing: border-box;
+}
+
+/* Define a aparência geral da página. */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    background-color: rgb(130, 0, 30);
+}
+
+/* Cria a caixa principal do exercício. */
+.cardapio {
+    max-width: 750px;
+    margin: 40px auto;
+    padding: 24px;
+    border: 2.5px solid #000000;
+    background-color: rgb(120, 120, 120);
+}
+
+/* Lista de seletores: aplica o bloco a h1 e h2. */
+h1, h2 {
+    text-align: center;
+    color: rgb(40, 0, 255);
+}
+
+/* Destaca o texto do prato do dia. */
+.destaque {
+    color: gold;
+    font-weight: bold;
+}
+
+/* A segunda classe aumenta o texto. */
+.grande {
+    font-size: 1.25rem;
+}
+
+/* Seleciona todas as imagens da página. */
+img {
+    /* Faz a imagem se comportar como um elemento de bloco. */
+    display: block;
+    /* Impede que a imagem ultrapasse a largura do elemento que a contém. */
+    max-width: 100%;
+    /* Ajusta a altura automaticamente, mantendo a proporção da imagem. */
+    height: auto;
+    /* Cria 24px de margem superior e inferior e auto faz margem esquerda e direita automáticas, centralizando a imagem horizontalmente. */
+    margin: 24px auto;
+}
+
+/* Aparência normal do link. */
+a {
+    color: #0070c0;
+}
+
+/* Estado hover: ponteiro sobre o link. */
+a:hover {
+    color: #c00000;
+    text-decoration: underline;
+}

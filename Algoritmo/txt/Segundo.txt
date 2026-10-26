@@ -1,0 +1,30 @@
+#include <stdio.h>
+#define PI 3.14159
+
+// Função para calculo de área retangulo
+float areaRetangulo(float base, float altura) {
+    return base * altura;
+}
+
+// Função para calculo de área circulo
+float areaCirculo(float raio) {
+    return PI * raio * raio;
+}
+
+int main() {
+    float base, altura, raio;
+
+    // Retângulo
+    printf("Digite a base do retângulo: ");
+    scanf("%f", &base);
+    printf("Digite a altura do retângulo: ");
+    scanf("%f", &altura);
+    printf("Área do retângulo = %2.f\n", areaRetangulo(base, altura));
+
+    // circulo
+    printf("Digite o raio do circulo: ");
+    scanf("%f", &raio);
+    printf("Área do circulo = %2.f\n", areaCirculo(raio));
+
+    return 0;
+}

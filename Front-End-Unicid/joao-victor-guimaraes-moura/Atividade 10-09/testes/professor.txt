@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exemplo1</title>
+</head>
+<body>
+    <p> <a href="arquivo1.html" target="_self">Arquivo 1</a> </p>
+
+    <a href="mailto:jose@teste.com?subject=Duvidas&body=Escreva%20aqui">Enviar e-mail</a>
+
+</body>
+</html>

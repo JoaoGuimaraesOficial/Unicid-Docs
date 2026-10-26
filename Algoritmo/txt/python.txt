@@ -1,0 +1,35 @@
+valor_saque = int(input("Selecione um valor para o saque: "))
+saldo = 10000
+
+if valor_saque > saldo:
+    print("*** ERRO: Valor inserido excede o saldo! ***")
+
+elif valor_saque % 5 != 0:
+    print("*** ERRO: Valor inserido DEVE ser múltiplo de 5! ***")
+
+else:
+    n100 = valor_saque // 100
+    valor_saque %= 100
+
+    n50 = valor_saque // 50
+    valor_saque %= 50
+
+    n20 = valor_saque // 20
+    valor_saque %= 20
+
+    n5 = valor_saque // 5
+    valor_saque %= 5
+
+    print("\n*** NOTAS ENTREGUES ***")
+
+    if n100 > 0:
+        print("Notas de 100:", n100)
+
+    if n50 > 0:
+        print("Notas de 50:", n50)
+
+    if n20 > 0:
+        print("Notas de 20:", n20)
+
+    if n5 > 0:
+        print("Notas de 5:", n5)

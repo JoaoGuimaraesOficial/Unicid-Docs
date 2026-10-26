@@ -1,0 +1,24 @@
+teste 1:
+
+#include <stdio.h>
+
+int main() {
+    float base, altura, raio, areaRetangulo, areacirculo;
+    const float PI = 3.14159;
+
+    // Cálculo da área do retângulo
+    printf("Digite a base do retângulo: ");
+    scanf("%f", &base);
+    printf("Digite a altura do retângulo: ");
+    scanf("%f", &altura);
+    areaRetangulo = base * altura;
+    printf("Área do retângulo = %.2f\n", areaRetangulo);
+
+    // Cálculo da área do circulo
+    printf("Digite o raio do circulo: ");
+    scanf("%f", &raio);
+    areacirculo = PI * raio * raio;
+    printf("Área do circulo = %.2f\n", areacirculo);
+
+    return 0;
+}

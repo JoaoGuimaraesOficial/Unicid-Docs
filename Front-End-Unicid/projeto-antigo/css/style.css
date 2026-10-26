@@ -1,0 +1,60 @@
+body {
+  background-color: rgb(50, 50, 50);
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: gold;
+}
+
+h1,
+h2,
+h3 {
+  text-align: center;
+  color: gold;
+  margin: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  background-color: gold;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.grid-container > div {
+  background-color: rgb(50, 50, 50);
+  color: gold;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 8px;
+  text-align: justify;
+}
+
+.item1 {
+  grid-column: 1 / span 2;
+}
+
+.item2 {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+}
+
+.item5 {
+  grid-column: 1 / span 3;
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .item1,
+  .item2,
+  .item3,
+  .item4,
+  .item5 {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}

@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+int main() {
+    int valor_saque, saldo = 10000; // A variável saldo recebe o valor que pode ser sacado.
+    int n200, n100, n50, n20, n10, n5; // Cedulas que o sistema reconhece.
+
+    while (valor_saque != 0) { // While - Loop onde permite a conclusão do sistema de maneira correta.
+        printf("Selecione um valor para o saque: "); // Requisição de valor.
+        scanf("%d", &valor_saque); // Scan do valor selecionado pelo usuário.
+
+        if (valor_saque > saldo) { // if Usado para garantir que o valor não exceda o limite.
+            printf("*** ERRO: Valor inserido excede o saldo! ***\n");
+        }
+        else if (valor_saque % 5 != 0) { // if que verifica se o valor e valido - mult de 5.
+            printf("*** ERRO: Valor inserido DEVE ser multiplo de 5! ***\n");
+        }
+        else { // else que garante a contagem das cedulas.
+            n200 = valor_saque / 200; // Verifica se o valor e divisivel por 200, e quantas vezes isso ocorre.
+            valor_saque %= 200; // Garante que o resto seja exato.
+
+            n100 = valor_saque / 100;
+            valor_saque %= 100;
+
+            n50 = valor_saque / 50;
+            valor_saque %= 50;
+
+            n20 = valor_saque / 20;
+            valor_saque %= 20;
+
+            n10 = valor_saque / 10;
+            valor_saque %= 10;
+
+            n5 = valor_saque / 5;
+            valor_saque %= 5;
+
+            printf("\n*** NOTAS ENTREGUES ***\n"); // Print de titulo que inicia a contagem das cedulas.
+
+            if (n200 > 0) { // if que recolhe os valores armazenados nas variáveis das cedulas e printa elas.
+                printf("Notas de 200: %d\n", n200);
+            }
+
+            if (n100 > 0) {
+                printf("Notas de 100: %d\n", n100);
+            }
+
+            if (n50 > 0) {
+                printf("Notas de 50: %d\n", n50);
+            }
+
+            if (n20 > 0) {
+                printf("Notas de 20: %d\n", n20);
+            }
+
+            if (n10 > 0) {
+                printf("Notas de 10: %d\n", n10);
+            }
+
+            if (n5 > 0) {
+                printf("Notas de 5: %d\n", n5);
+            }
+        }
+    }
+
+    return 0;
+} // Finalgoritmo.

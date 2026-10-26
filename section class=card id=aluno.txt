@@ -1,0 +1,553 @@
+<section class="card" id="aluno">
+  <div class="card-head">
+    <h2>ALUNO</h2>
+    <span class="qtd">8 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Pessoa cadastrada que utiliza os serviços da academia: treina, contrata planos e reserva aulas coletivas.</p>
+    <p class="rel">Relaciona-se com MATRICULA, TREINO e CHECKIN_AULA (1:N em todos).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_ALUNO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único do aluno, gerado automaticamente.</p></td>
+          <td>Cada aluno possui um único código no sistema, que nunca se repete nem é reaproveitado.</td>
+        </tr>
+        <tr>
+          <td><code>NM_ALUNO</code></td>
+          <td><span class="tp">VARCHAR(100)</span><span class="tg nn">NN</span><p>Nome completo do aluno.</p></td>
+          <td>O cadastro exige nome completo para identificação na recepção e no contrato.</td>
+        </tr>
+        <tr>
+          <td><code>ID_CPF</code></td>
+          <td><span class="tp">CHAR(11)</span><span class="tg nn">NN</span><span class="tg uk">UK</span><p>CPF somente com dígitos, sem pontos ou traço.</p></td>
+          <td>Um CPF só pode ter um cadastro de aluno; os dígitos verificadores devem ser validados antes da gravação.</td>
+        </tr>
+        <tr>
+          <td><code>NM_EMAIL</code></td>
+          <td><span class="tp">VARCHAR(120)</span><span class="tg nn">NN</span><span class="tg uk">UK</span><p>E-mail principal de contato.</p></td>
+          <td>Usado para avisos, cobranças e recuperação de acesso; não pode se repetir entre alunos.</td>
+        </tr>
+        <tr>
+          <td><code>DT_NASCIMENTO</code></td>
+          <td><span class="tp">DATE</span><span class="tg nn">NN</span><p>Data de nascimento do aluno.</p></td>
+          <td>Permite validar a idade mínima para matrícula e adequar o treino à faixa etária.</td>
+        </tr>
+        <tr>
+          <td><code>DS_FOTO_PERFIL</code></td>
+          <td><span class="tp">VARCHAR(255)</span><span class="tg nl">NL</span><p>Caminho ou URL da foto de perfil.</p></td>
+          <td>A foto é exibida na recepção para conferência visual da identidade; é opcional.</td>
+        </tr>
+        <tr>
+          <td><code>DS_BIOMETRIA_FACIAL</code></td>
+          <td><span class="tp">BLOB</span><span class="tg nl">NL</span><p>Modelo (template) da biometria facial, não a imagem original.</p></td>
+          <td>Usada no acesso por reconhecimento facial; só é armazenada com consentimento expresso do aluno (LGPD, dado pessoal sensível).</td>
+        </tr>
+        <tr>
+          <td><code>IN_ATIVO</code></td>
+          <td><span class="tp">TINYINT(1) DEFAULT 1</span><span class="tg nn">NN</span><p>Indicador de cadastro ativo (1 = ativo, 0 = inativo).</p></td>
+          <td>Aluno inativo não acessa a academia; o cadastro é inativado, nunca excluído, para preservar o histórico.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="chamado_manutencao">
+  <div class="card-head">
+    <h2>CHAMADO_MANUTENCAO</h2>
+    <span class="qtd">5 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Solicitação de reparo aberta por um funcionário, acompanhada até a conclusão.</p>
+    <p class="rel">Pertence a um FUNCIONARIO, quem abriu o chamado (N:1).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_CHAMADO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único do chamado.</p></td>
+          <td>Cada solicitação de manutenção é única.</td>
+        </tr>
+        <tr>
+          <td><code>ID_FUNCIONARIO_ABERTURA</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; FUNCIONARIO</span><span class="tg nn">NN</span><p>Funcionário que abriu o chamado.</p></td>
+          <td>Todo chamado é rastreável a quem o abriu, para esclarecer dúvidas sobre o problema.</td>
+        </tr>
+        <tr>
+          <td><code>DT_ABERTURA</code></td>
+          <td><span class="tp">DATETIME DEFAULT CURRENT_TIMESTAMP</span><span class="tg nn">NN</span><p>Data e hora de abertura.</p></td>
+          <td>Permite medir o tempo de atendimento até a conclusão.</td>
+        </tr>
+        <tr>
+          <td><code>DS_PROBLEMA</code></td>
+          <td><span class="tp">TEXT</span><span class="tg nn">NN</span><p>Descrição do problema encontrado.</p></td>
+          <td>Informa à manutenção o defeito a ser corrigido.</td>
+        </tr>
+        <tr>
+          <td><code>TP_STATUS</code></td>
+          <td><span class="tp">VARCHAR(15)</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Situação: ABERTO, EM_ANDAMENTO ou CONCLUIDO.</p></td>
+          <td>Acompanha o ciclo de vida do chamado, da abertura à conclusão.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="checkin_aula">
+  <div class="card-head">
+    <h2>CHECKIN_AULA</h2>
+    <span class="qtd">4 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Reserva de vaga de um aluno em uma aula coletiva (relação N:N entre ALUNO e AULA_COLETIVA).</p>
+    <p class="rel">Pertence a uma AULA_COLETIVA e a um ALUNO (N:1 para cada um).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_CHECKIN</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único do check-in.</p></td>
+          <td>Cada reserva de vaga é registrada de forma única.</td>
+        </tr>
+        <tr>
+          <td><code>ID_AULA</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; AULA_COLETIVA</span><span class="tg nn">NN</span><span class="tg uk">UK</span><p>Aula reservada.</p></td>
+          <td>Todo check-in refere-se a uma aula existente; a combinação (ID_AULA, ID_ALUNO) é única.</td>
+        </tr>
+        <tr>
+          <td><code>ID_ALUNO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; ALUNO</span><span class="tg nn">NN</span><span class="tg uk">UK</span><p>Aluno que realizou o check-in.</p></td>
+          <td>Somente alunos com matrícula ativa fazem check-in, e cada aluno ocupa no máximo uma vaga por aula.</td>
+        </tr>
+        <tr>
+          <td><code>DT_REALIZACAO</code></td>
+          <td><span class="tp">DATETIME DEFAULT CURRENT_TIMESTAMP</span><span class="tg nn">NN</span><p>Momento em que o check-in foi feito.</p></td>
+          <td>Define a ordem de ocupação das vagas e permite auditar as reservas.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="estoque_material">
+  <div class="card-head">
+    <h2>ESTOQUE_MATERIAL</h2>
+    <span class="qtd">5 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Material de apoio (limpeza, higiene e equipamentos) controlado por unidade.</p>
+    <p class="rel">Pertence a uma UNIDADE (N:1).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_MATERIAL</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único do material.</p></td>
+          <td>Cada item de estoque é único dentro do sistema.</td>
+        </tr>
+        <tr>
+          <td><code>ID_UNIDADE</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; UNIDADE</span><span class="tg nn">NN</span><p>Unidade onde o material está armazenado.</p></td>
+          <td>O estoque é controlado por unidade, e cada unidade mantém o seu.</td>
+        </tr>
+        <tr>
+          <td><code>NM_MATERIAL</code></td>
+          <td><span class="tp">VARCHAR(80)</span><span class="tg nn">NN</span><p>Nome do material (ex.: toalha, álcool em gel, halter).</p></td>
+          <td>Identifica o item para consulta e reposição.</td>
+        </tr>
+        <tr>
+          <td><code>TP_MATERIAL</code></td>
+          <td><span class="tp">VARCHAR(20)</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Categoria: LIMPEZA, HIGIENE ou EQUIPAMENTO.</p></td>
+          <td>Classifica os materiais para facilitar o controle e a reposição.</td>
+        </tr>
+        <tr>
+          <td><code>QT_ESTOQUE</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Quantidade disponível; nunca negativa.</p></td>
+          <td>O estoque não pode ficar negativo; quantidade baixa sinaliza necessidade de reposição.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="funcionario">
+  <div class="card-head">
+    <h2>FUNCIONARIO</h2>
+    <span class="qtd">5 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Colaborador da academia (professores, instrutores, recepção e gestão), responsável por treinos, aulas, ocorrências e chamados.</p>
+    <p class="rel">Relaciona-se com TREINO (professor), AULA_COLETIVA (instrutor), OCORRENCIA_TURNO (autor) e CHAMADO_MANUTENCAO (abertura), todos 1:N.</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_FUNCIONARIO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único do funcionário.</p></td>
+          <td>Todo colaborador possui um código único, usado para rastrear suas ações no sistema.</td>
+        </tr>
+        <tr>
+          <td><code>NM_FUNCIONARIO</code></td>
+          <td><span class="tp">VARCHAR(100)</span><span class="tg nn">NN</span><p>Nome completo do funcionário.</p></td>
+          <td>Identifica o responsável por treinos, aulas, ocorrências e chamados.</td>
+        </tr>
+        <tr>
+          <td><code>ID_CPF</code></td>
+          <td><span class="tp">CHAR(11)</span><span class="tg nn">NN</span><span class="tg uk">UK</span><p>CPF somente com dígitos.</p></td>
+          <td>Um CPF não pode ter dois cadastros de funcionário.</td>
+        </tr>
+        <tr>
+          <td><code>TP_PAPEL</code></td>
+          <td><span class="tp">VARCHAR(20)</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Papel: PROFESSOR, INSTRUTOR, RECEPCIONISTA ou GERENTE.</p></td>
+          <td>O papel define as atribuições e permissões; apenas PROFESSOR cria treinos e apenas INSTRUTOR conduz aulas coletivas.</td>
+        </tr>
+        <tr>
+          <td><code>IN_ATIVO</code></td>
+          <td><span class="tp">TINYINT(1) DEFAULT 1</span><span class="tg nn">NN</span><p>Indica se o vínculo com a academia está ativo.</p></td>
+          <td>Funcionário desligado é inativado, nunca excluído, para manter o histórico de treinos e ocorrências.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="item_treino">
+  <div class="card-head">
+    <h2>ITEM_TREINO</h2>
+    <span class="qtd">6 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Exercício individual que compõe uma ficha de treino, com séries, repetições e carga.</p>
+    <p class="rel">Pertence a um TREINO (N:1); um treino possui um ou mais itens.</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_ITEM_TREINO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único do item.</p></td>
+          <td>Cada exercício da ficha é identificado de forma única.</td>
+        </tr>
+        <tr>
+          <td><code>ID_TREINO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; TREINO</span><span class="tg nn">NN</span><p>Treino ao qual o exercício pertence.</p></td>
+          <td>Todo item pertence a um treino; um treino deve ter pelo menos um item.</td>
+        </tr>
+        <tr>
+          <td><code>NM_EXERCICIO</code></td>
+          <td><span class="tp">VARCHAR(80)</span><span class="tg nn">NN</span><p>Nome do exercício (ex.: Supino reto).</p></td>
+          <td>Descreve a atividade que o aluno deve executar.</td>
+        </tr>
+        <tr>
+          <td><code>QT_SERIES</code></td>
+          <td><span class="tp">TINYINT UNSIGNED</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Número de séries; deve ser maior que zero.</p></td>
+          <td>Define o volume prescrito do exercício.</td>
+        </tr>
+        <tr>
+          <td><code>QT_REPETICOES</code></td>
+          <td><span class="tp">TINYINT UNSIGNED</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Repetições por série; deve ser maior que zero.</p></td>
+          <td>Define a intensidade prescrita do exercício.</td>
+        </tr>
+        <tr>
+          <td><code>DS_CARGA</code></td>
+          <td><span class="tp">VARCHAR(30)</span><span class="tg nl">NL</span><p>Carga indicada (ex.: 20 kg, peso corporal).</p></td>
+          <td>Orienta a progressão de carga conforme a evolução do aluno; livre porque nem todo exercício usa peso.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="matricula">
+  <div class="card-head">
+    <h2>MATRICULA</h2>
+    <span class="qtd">7 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Contratação de um plano por um aluno, com período de vigência e situação atual.</p>
+    <p class="rel">Pertence a um ALUNO e a um PLANO (N:1 para cada um).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_MATRICULA</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único da matrícula.</p></td>
+          <td>Cada contratação de plano gera uma matrícula própria, preservando o histórico do aluno.</td>
+        </tr>
+        <tr>
+          <td><code>ID_ALUNO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; ALUNO</span><span class="tg nn">NN</span><p>Aluno titular da matrícula.</p></td>
+          <td>Toda matrícula pertence a um aluno; um aluno pode ter várias matrículas ao longo do tempo.</td>
+        </tr>
+        <tr>
+          <td><code>ID_PLANO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; PLANO</span><span class="tg nn">NN</span><p>Plano contratado.</p></td>
+          <td>Toda matrícula está vinculada a um plano, que determina o valor e a recorrência.</td>
+        </tr>
+        <tr>
+          <td><code>DT_INICIO</code></td>
+          <td><span class="tp">DATE</span><span class="tg nn">NN</span><p>Data de início da vigência.</p></td>
+          <td>O acesso à academia é liberado a partir desta data.</td>
+        </tr>
+        <tr>
+          <td><code>DT_FIM</code></td>
+          <td><span class="tp">DATE</span><span class="tg nl">NL</span><span class="tg ck">CK</span><p>Data de término da vigência; deve ser igual ou posterior a DT_INICIO.</p></td>
+          <td>Após esta data o acesso é encerrado, salvo renovação; vazia quando a vigência é indeterminada.</td>
+        </tr>
+        <tr>
+          <td><code>TP_STATUS</code></td>
+          <td><span class="tp">VARCHAR(15)</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Situação: ATIVA, TRANCADA, CANCELADA ou INADIMPLENTE.</p></td>
+          <td>Somente matrículas ATIVAS permitem acesso e check-in em aulas; um aluno só pode ter uma matrícula ativa por vez.</td>
+        </tr>
+        <tr>
+          <td><code>CD_ULTIMOS_DIGITOS_CARTAO</code></td>
+          <td><span class="tp">CHAR(4)</span><span class="tg nl">NL</span><p>Últimos 4 dígitos do cartão usado na cobrança.</p></td>
+          <td>Identifica o meio de pagamento sem armazenar o número completo do cartão, reduzindo o risco de vazamento.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="ocorrencia_turno">
+  <div class="card-head">
+    <h2>OCORRENCIA_TURNO</h2>
+    <span class="qtd">6 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Registro de passagem de turno feito pela equipe, para comunicar fatos e pendências ao próximo turno.</p>
+    <p class="rel">Pertence a um FUNCIONARIO, o autor do registro (N:1).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_OCORRENCIA</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único da ocorrência.</p></td>
+          <td>Cada registro de passagem de turno é único.</td>
+        </tr>
+        <tr>
+          <td><code>ID_FUNCIONARIO_AUTOR</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; FUNCIONARIO</span><span class="tg nn">NN</span><p>Funcionário que fez o registro.</p></td>
+          <td>Todo registro é rastreável ao funcionário que o escreveu.</td>
+        </tr>
+        <tr>
+          <td><code>DT_REGISTRO</code></td>
+          <td><span class="tp">DATETIME DEFAULT CURRENT_TIMESTAMP</span><span class="tg nn">NN</span><p>Data e hora do registro.</p></td>
+          <td>Mantém a cronologia dos acontecimentos entre os turnos.</td>
+        </tr>
+        <tr>
+          <td><code>TP_TURNO</code></td>
+          <td><span class="tp">VARCHAR(10)</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Turno do registro: MANHA, TARDE ou NOITE.</p></td>
+          <td>Organiza as ocorrências por turno de trabalho.</td>
+        </tr>
+        <tr>
+          <td><code>DS_MENSAGEM</code></td>
+          <td><span class="tp">TEXT</span><span class="tg nn">NN</span><p>Conteúdo da ocorrência.</p></td>
+          <td>Comunica pendências e fatos relevantes ao turno seguinte.</td>
+        </tr>
+        <tr>
+          <td><code>IN_RESOLVIDO</code></td>
+          <td><span class="tp">TINYINT(1) DEFAULT 0</span><span class="tg nn">NN</span><p>Indica se a ocorrência foi resolvida (1 = sim, 0 = não).</p></td>
+          <td>Ocorrências pendentes ficam em destaque até serem marcadas como resolvidas.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="plano">
+  <div class="card-head">
+    <h2>PLANO</h2>
+    <span class="qtd">5 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Produto comercial oferecido ao aluno, com periodicidade de cobrança e valor definidos.</p>
+    <p class="rel">Relaciona-se com MATRICULA (1:N).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_PLANO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único do plano.</p></td>
+          <td>Cada plano comercial é identificado de forma única.</td>
+        </tr>
+        <tr>
+          <td><code>NM_PLANO</code></td>
+          <td><span class="tp">VARCHAR(60)</span><span class="tg nn">NN</span><span class="tg uk">UK</span><p>Nome comercial do plano (ex.: Básico, Premium).</p></td>
+          <td>Não podem existir dois planos com o mesmo nome, para evitar confusão na venda e nos relatórios.</td>
+        </tr>
+        <tr>
+          <td><code>TP_RECORRENCIA</code></td>
+          <td><span class="tp">VARCHAR(15)</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Periodicidade da cobrança: MENSAL, TRIMESTRAL, SEMESTRAL ou ANUAL.</p></td>
+          <td>Define o intervalo entre as cobranças; só são aceitos os valores previstos.</td>
+        </tr>
+        <tr>
+          <td><code>VL_MENSALIDADE</code></td>
+          <td><span class="tp">DECIMAL(10,2)</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Valor da mensalidade em reais; deve ser maior que zero.</p></td>
+          <td>Serve de base para o cálculo das cobranças recorrentes de todas as matrículas do plano.</td>
+        </tr>
+        <tr>
+          <td><code>IN_ATIVO</code></td>
+          <td><span class="tp">TINYINT(1) DEFAULT 1</span><span class="tg nn">NN</span><p>Indica se o plano está disponível para venda.</p></td>
+          <td>Planos descontinuados deixam de ser vendidos, mas continuam vinculados às matrículas já existentes.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="treino">
+  <div class="card-head">
+    <h2>TREINO</h2>
+    <span class="qtd">6 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Ficha de treino prescrita por um professor para um aluno, com prazo de validade.</p>
+    <p class="rel">Pertence a um ALUNO e a um FUNCIONARIO (professor); possui vários ITEM_TREINO (1:N).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_TREINO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único da ficha de treino.</p></td>
+          <td>Cada ficha de treino é única e pode ser consultada e versionada ao longo do tempo.</td>
+        </tr>
+        <tr>
+          <td><code>ID_ALUNO</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; ALUNO</span><span class="tg nn">NN</span><p>Aluno para quem o treino foi prescrito.</p></td>
+          <td>Todo treino é prescrito para um aluno com matrícula ativa.</td>
+        </tr>
+        <tr>
+          <td><code>ID_PROFESSOR</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg fk">FK &rarr; FUNCIONARIO</span><span class="tg nn">NN</span><p>Professor responsável pela prescrição.</p></td>
+          <td>Somente funcionário com papel PROFESSOR pode prescrever treinos.</td>
+        </tr>
+        <tr>
+          <td><code>DT_CRIACAO</code></td>
+          <td><span class="tp">DATE</span><span class="tg nn">NN</span><p>Data de criação da ficha.</p></td>
+          <td>Permite acompanhar a evolução e o histórico de treinos do aluno.</td>
+        </tr>
+        <tr>
+          <td><code>DT_VALIDADE</code></td>
+          <td><span class="tp">DATE</span><span class="tg nn">NN</span><span class="tg ck">CK</span><p>Data de validade; deve ser igual ou posterior a DT_CRIACAO.</p></td>
+          <td>Treino vencido deve ser revisado pelo professor antes de continuar sendo usado.</td>
+        </tr>
+        <tr>
+          <td><code>DS_OBSERVACAO_MEDICA</code></td>
+          <td><span class="tp">TEXT</span><span class="tg nl">NL</span><p>Restrições ou observações médicas relevantes ao treino.</p></td>
+          <td>Registra limitações para a segurança do aluno; por ser dado de saúde, o acesso é restrito (LGPD).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="card" id="unidade">
+  <div class="card-head">
+    <h2>UNIDADE</h2>
+    <span class="qtd">3 atributos</span>
+  </div>
+  <div class="card-info">
+    <p>Filial física da Academia Gaviões, onde ocorrem aulas e onde ficam os materiais em estoque.</p>
+    <p class="rel">Relaciona-se com AULA_COLETIVA e ESTOQUE_MATERIAL (1:N em ambos).</p>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Atributo</th>
+          <th>Descrição</th>
+          <th>Regra de negócio associada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_UNIDADE</code></td>
+          <td><span class="tp">INT UNSIGNED</span><span class="tg pk">PK</span><span class="tg ai">AI</span><p>Identificador único da unidade.</p></td>
+          <td>Cada filial da academia é identificada de forma única.</td>
+        </tr>
+        <tr>
+          <td><code>NM_UNIDADE</code></td>
+          <td><span class="tp">VARCHAR(80)</span><span class="tg nn">NN</span><span class="tg uk">UK</span><p>Nome da unidade.</p></td>
+          <td>Identifica a filial em aulas, estoques e relatórios; não pode se repetir.</td>
+        </tr>
+        <tr>
+          <td><code>DS_ENDERECO</code></td>
+          <td><span class="tp">VARCHAR(200)</span><span class="tg nn">NN</span><p>Endereço completo da unidade.</p></td>
+          <td>Informa ao aluno a localização da filial onde a aula ou o atendimento acontece.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
